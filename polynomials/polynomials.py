@@ -72,7 +72,7 @@ class Polynomial:
         if isinstance(other, Polynomial):
             poly = Polynomial((0,))
             for i in other.coefficients:
-                poly+= self.scalar_mul(i)
+                poly+= Polynomial( tuple([ 0 for _ in range(i-1) ]) +   self.scalar_mul(other.coefficients[i]).coefficients)
             return poly
         elif  isinstance(other, Number):
             return self.scalar_mul(other)
@@ -82,9 +82,9 @@ class Polynomial:
         return self* other
     def __sub__(self, other):
         if isinstance(other,Polynomial ):
-            common= min (self.degree, other.degree)
+            common= min (self.degree(), other.degree())
             coefs= tuple(a-b for a,b in zip(self.coefficients, other.coefficients))
-            coefs+= self.coefficients(common)+ other.coefficients(common)
+            coefs+= self.coefficients [common:]+ other.coefficients [common:]
             return Polynomial(coefs)
         elif isinstance(other, Number):
             coefs=(self.coefficients[0] - other ,) + self.coefficients[1:]
@@ -96,10 +96,10 @@ class Polynomial:
     def __pow__(self,int):
         if isinstance(int , Integral):
             if int > 0:
-              poly= 1
-              for _ in len(int):
+              poly= Polynomial((1,))
+              for _ in range(int):
                 poly= poly* self
-              return self
+              return poly
             else:
                 return NotImplemented
         else:
