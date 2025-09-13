@@ -113,14 +113,19 @@ class Polynomial:
         else:
             return NotImplemented
     def dx(self):
-        for d, c in enumerate(self.coefficients):
-            coefs=()
-            if self.degree()>0 :
-                coefs+= (c*d,)
-                return Polynomial(coefs)
-            else:
-                return Polynomial((0,))
-            
+        if self.coefficients is None or self.degree()==0:
+            return Polynomial((0,))
+        else:
+            coefs=tuple()
+            for  d, c in enumerate(self.coefficients):
+                if d>0:
+                    coefs+= (c*d,)
+            return Polynomial(coefs)
+
+
+
+
+        
 def derivative(poly):
     if isinstance(poly,Polynomial):
         return poly.dx()
