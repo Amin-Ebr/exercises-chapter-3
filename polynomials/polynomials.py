@@ -82,9 +82,13 @@ class Polynomial:
         return self * other
     def __sub__(self, other):
         if isinstance(other,Polynomial ):
-            common= min (self.degree(), other.degree())
+            t, s = len(self.coefficients), len(other.coefficients)
+            common= min (t,s)
             coefs= tuple(a-b for a,b in zip(self.coefficients, other.coefficients))
-            coefs+= self.coefficients [common:]+ other.coefficients [common:]
+            if t>s :
+               coefs+= self.coefficients [common:]
+            elif t<s:
+                coefs-= other.coefficients[common:]
             return Polynomial(coefs)
         elif isinstance(other, Number):
             coefs=(self.coefficients[0] - other ,) + self.coefficients[1:]
