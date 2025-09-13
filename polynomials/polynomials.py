@@ -71,15 +71,15 @@ class Polynomial:
     def __mul__(self,other):
         if isinstance(other, Polynomial):
             poly = Polynomial((0,))
-            for i in other.coefficients:
-                poly+= Polynomial( tuple([ 0 for _ in range(i-1) ]) +   self.scalar_mul(other.coefficients[i]).coefficients)
+            for d, c in enumerate(other.coefficients):
+                poly+= Polynomial( tuple([ 0 for _ in range(d) ]) +   self.scalar_mul(c).coefficients)
             return poly
         elif  isinstance(other, Number):
             return self.scalar_mul(other)
         else:
             return NotImplemented
     def __rmul__(self, other):
-        return self* other
+        return self * other
     def __sub__(self, other):
         if isinstance(other,Polynomial ):
             common= min (self.degree(), other.degree())
@@ -93,11 +93,11 @@ class Polynomial:
             return NotImplemented
     def __rsub__(self,other): 
         return -1 *(self - other)
-    def __pow__(self,int):
-        if isinstance(int , Integral):
-            if int > 0:
+    def __pow__(self,n):
+        if isinstance(n , Integral):
+            if n > 0:
               poly= Polynomial((1,))
-              for _ in range(int):
+              for _ in range(n):
                 poly= poly* self
               return poly
             else:
