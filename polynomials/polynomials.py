@@ -88,7 +88,7 @@ class Polynomial:
             if t>s :
                coefs+= self.coefficients [common:]
             elif t<s:
-                coefs-= other.coefficients[common:]
+                coefs += tuple( -c for c in other.coefficients[common:])
             return Polynomial(coefs)
         elif isinstance(other, Number):
             coefs=(self.coefficients[0] - other ,) + self.coefficients[1:]
