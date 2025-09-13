@@ -5,8 +5,19 @@ from numbers import Integral
 class Polynomial:
 
     def __init__(self, coefs):
-        self.coefficients = coefs
-
+        """reversednewcoefs is the tuple if coefficients when zeros are cutted out from the end of coefs in the reversed oreder"""
+        if all(c==0 for c in coefs) :
+                revesednewcoefs=(0,)
+        else:
+            revesednewcoefs= ()
+            flag=False
+            for c in reversed(coefs):
+                if  flag== False and c!=0:
+                   flag= True
+                   revesednewcoefs +=(c,)
+                elif flag:
+                   revesednewcoefs+=(c,)
+        self.coefficients = tuple(reversed(revesednewcoefs))
     def degree(self):
         return len(self.coefficients) - 1
 
@@ -101,4 +112,24 @@ class Polynomial:
             return value
         else:
             return NotImplemented
+    def dx(self):
+        for d, c in enumerate(self.coefficients):
+            coefs=()
+            if self.degree()>0 :
+                coefs + (c*d,)
+                return Polynomial(coefs)
+            else:
+                return Polynomial((0,))
+            
+def derivative(poly):
+    if isinstance(poly,Polynomial):
+        return poly.dx()
+    else:
+         return NotImplemented
+    
+    
+
+
+
+
         
